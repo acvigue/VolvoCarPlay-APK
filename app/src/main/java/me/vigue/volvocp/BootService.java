@@ -26,8 +26,6 @@ public class BootService extends Service {
 
     private Runnable runnable = () -> {
         while(working.get()) {
-            // put your socket-code here
-            Log.d("test", "running...");
             SystemClock.sleep(1000);
         }
     };
@@ -35,11 +33,20 @@ public class BootService extends Service {
     @Override
     public void onCreate() {
         // start new thread and you your work there
-        new Thread(runnable).start();
+        //new Thread(runnable).start();
 
+        //max music vol
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int max_vol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, max_vol, 0);
+
+        //max call vol
+        max_vol = audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
+        audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, max_vol, 0);
+
+        //max ring
+        max_vol = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+        audioManager.setStreamVolume(AudioManager.STREAM_RING, max_vol, 0);
 
         String NOTIFICATION_CHANNEL_ID = "me.vigue.volvocp";
         String channelName = "ATSAMD Serial Service";
